@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title>Login con Firebase</title>
+</head>
+
+<body>
+  <h1>Iniciar sesión</h1>
+
+  <form id="loginForm">
+    <input type="email" id="email" placeholder="Correo" required>
+    <input type="password" id="password" placeholder="Contraseña" required>
+    <button type="submit">Ingresar</button>
+  </form>
+
+  <div id="mensaje" style="margin-top: 20px; font-weight: bold;"></div>
+
+  <!-- Firebase SDK versión 8 (más fácil de usar) -->
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+
+  <!-- Tu configuración de Firebase -->
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyDLbaB7F9sFUVOhVEPLSAvmYAVdsDButC4",
+      authDomain: "prueba-firebase-2025-06.firebaseapp.com",
+      projectId: "prueba-firebase-2025-06",
+      storageBucket: "prueba-firebase-2025-06.appspot.com",
+      messagingSenderId: "932300742282",
+      appId: "1:932300742282:web:5f5a4f255a2860562d5773",
+      measurementId: "G-C1DNRFRT2C"
+    };
+
+    // Inicializar Firebase
+    firebase.initializeApp(firebaseConfig);
+  </script>
+
+  <!-- Tu lógica de login -->
+  <script>
+    const loginForm = document.getElementById("loginForm");
+
+    loginForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+
+      const email = document.getElementById("email").value;
+      const pass = document.getElementById("password").value;
+
+      firebase.auth().signInWithEmailAndPassword(email, pass)
+        .then((userCredential) => {
+          alert("¡Inicio de sesión exitoso!");
+          console.log("Usuario:", userCredential.user);
+        })
+        .catch((error) => {
+          alert("Error: " + error.message);
+        });
+    });
+  </script>
+</body>
+
+</html>
