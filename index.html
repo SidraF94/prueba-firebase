@@ -1,45 +1,61 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
-  <meta charset="UTF-8">
-  <title>Autenticación Firebase</title>
+  <meta charset="UTF-8" />
+  <title>Firebase Auth + Perfil</title>
 </head>
-
 <body>
-  <h1>Firebase Auth</h1>
 
+  <h1>Firebase Auth y Perfil</h1>
+
+  <!-- Registro -->
   <section id="registro">
     <h2>Registro</h2>
-    <input type="email" id="regEmail" placeholder="Email">
-    <input type="password" id="regPass" placeholder="Contraseña">
-    <input type="password" id="regPass2" placeholder="Repetir contraseña">
+    <input type="email" id="regEmail" placeholder="Email" />
+    <input type="password" id="regPass" placeholder="Contraseña" />
+    <input type="password" id="regPass2" placeholder="Repetir contraseña" />
     <button onclick="registrarUsuario()">Registrarse</button>
   </section>
 
+  <!-- Login -->
   <section id="login">
     <h2>Iniciar Sesión</h2>
-    <input type="email" id="loginEmail" placeholder="Email">
-    <input type="password" id="loginPass" placeholder="Contraseña">
+    <input type="email" id="loginEmail" placeholder="Email" />
+    <input type="password" id="loginPass" placeholder="Contraseña" />
     <button onclick="iniciarSesion()">Iniciar sesión</button>
   </section>
 
-  <section id="logout" style="display: none;">
+  <!-- Sesión activa -->
+  <section id="logout" style="display:none;">
     <h2>Sesión activa</h2>
     <p id="usuarioActivo"></p>
     <button onclick="cerrarSesion()">Cerrar sesión</button>
   </section>
 
+  <!-- Recuperar contraseña -->
   <section id="recuperar">
     <h2>Recuperar contraseña</h2>
-    <input type="email" id="emailRecuperar" placeholder="Ingresá tu email">
+    <input type="email" id="emailRecuperar" placeholder="Ingresá tu email" />
     <button onclick="recuperarContrasena()">Enviar email de recuperación</button>
+  </section>
+
+  <!-- Formulario de perfil -->
+  <section id="perfil" style="display:none;">
+    <h2>Completar perfil</h2>
+    <input type="text" id="nombre" placeholder="Nombre completo" required />
+    <input type="text" id="telefono" placeholder="Teléfono" required />
+    <input type="text" id="dni" placeholder="DNI (opcional)" />
+    <button onclick="guardarPerfil()">Guardar perfil</button>
   </section>
 
   <!-- Firebase SDK v8 -->
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
-  <script src="app.js"></script>
-</body>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-storage.js"></script>
 
+  <!-- Tu archivo JS -->
+  <script src="app.js"></script>
+
+</body>
 </html>

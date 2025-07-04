@@ -42,7 +42,8 @@ function registrarUsuario() {
         .then(userCredential => {
             const user = userCredential.user;
             alert("Registro exitoso. Se envió un correo de verificación.");
-            return user.sendEmailVerification();
+            user.sendEmailVerification();
+            document.getElementById("perfil").style.display = "block";
         })
         .catch(error => {
             alert("Error en registro: " + error.message);
@@ -97,11 +98,18 @@ function mostrarUsuario(user) {
         document.getElementById("login").style.display = "none";
         seccionLogout.style.display = "block";
         usuarioActivo.innerText = `Estás logueado como: ${user.email}`;
+
+        // Cargar perfil del usuario
+        mostrarPerfil(user.uid);
+
     } else {
         document.getElementById("registro").style.display = "block";
         document.getElementById("login").style.display = "block";
         seccionLogout.style.display = "none";
         usuarioActivo.innerText = "";
+
+        // Ocultar formulario perfil
+        document.getElementById("perfil").style.display = "none";
     }
 }
 
@@ -135,5 +143,59 @@ function recuperarContrasena() {
         })
         .catch(error => {
             alert("Error: " + error.message);
+        });
+}
+
+// .---------------------------------------------------------------------------------------------------------
+
+const db = firebase.firestore();
+const storage = firebase.storage();
+
+function guardarPerfil() {
+    const user = auth.currentUser;
+    if (!user) return;
+
+    const nombre = document.getElementById("nombre").value.trim();
+    const telefono = document.getElementById("telefono").value.trim();
+    const dni = document.getElementById("dni").value.trim();
+
+    const datosPerfil = { nombre, telefono, dni };
+
+    const perfilRef = db.collection("usuarios").doc(user.uid);
+
+    perfilRef.set(datosPerfil)
+        .then(() => {
+            alert("Perfil guardado con éxito");
+            document.getElementById("perfil").style.display = "none";
+        })
+        .catch(error => {
+            console.error("Error al guardar perfil:", error);
+            alert("Hubo un error al guardar el perfil.");
+        });
+}
+
+function mostrarPerfil(uid) {
+    const perfilRef = db.collection("usuarios").doc(uid);
+    perfilRef.get()
+        .then(doc => {
+            if (doc.exists) {
+                const datos = doc.data();
+
+                // Mostrar datos en consola o alert (podés mejorar UI luego)
+                let info = `Nombre: ${datos.nombre}\nTeléfono: ${datos.telefono}`;
+                if (datos.dni) info += `\nDNI: ${datos.dni}`;
+                if (datos.fotoURL) info += `\nFoto URL: ${datos.fotoURL}`;
+
+                alert(info);
+
+                // Ocultamos el formulario porque ya existe perfil
+                document.getElementById("perfil").style.display = "none";
+            } else {
+                // No hay perfil, mostrar formulario para completar
+                document.getElementById("perfil").style.display = "block";
+            }
+        })
+        .catch(error => {
+            console.error("Error obteniendo perfil:", error);
         });
 }
